@@ -4,10 +4,15 @@ public class Main {
 
     public static Scanner scanner = new Scanner(System.in);
     public static final int SUDOKU_SIZE = 9;
+    public static int maxIteration = 0;
 
     public static void main(String[] args) throws Exception{
+        if (args.length > 0) {
+            maxIteration = Integer.parseInt(args[0]);
+        }
+
         SudokuProblem problem = readInput();
-        problem.solve();
+        problem.solve(maxIteration);
         problem.printBoard();
     }
 

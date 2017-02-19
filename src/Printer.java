@@ -2,7 +2,7 @@
  * Created by lifu.wu on 19/2/17.
  */
 public class Printer {
-    public static final boolean VERBOSE = false;
+    public static final boolean VERBOSE = true;
 
     public static void printIfVerbose(String content){
         if (VERBOSE) {
