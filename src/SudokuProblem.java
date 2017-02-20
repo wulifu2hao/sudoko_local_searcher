@@ -30,7 +30,7 @@ public class SudokuProblem {
     }
 
     public void solve(int maxIteration){
-        boolean solved = URSolver.solve(this, maxIteration);
+        boolean solved = URSolver2.solve(this, maxIteration);
         if (solved) {
             Printer.printlnIfVerbose("successful");
         } else {

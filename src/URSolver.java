@@ -1,5 +1,3 @@
-import javafx.geometry.Pos;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -10,15 +8,6 @@ public class URSolver {
 
     public static final int MAX_ITERATION = 10000;
     public static Random random = new Random();
-
-    static class Position {
-        int i, j;
-
-        public Position(int i, int j){
-            this.i = i;
-            this.j = j;
-        }
-    }
 
     public static boolean solve(SudokuProblem problem, int maxIteration){
         ArrayList<Position> unknownPositions = new ArrayList<Position>();
@@ -79,8 +68,5 @@ public class URSolver {
             problem.board[unknownPosition.i][unknownPosition.j] = 0;
         }
     }
-
-
-
 }
 
