@@ -3,10 +3,13 @@
  */
 public class ConsistencyCalculator {
     int[] utilArray;
+    int fullConsistencyScoreByUniqueNumber;
 
     public ConsistencyCalculator(int problemSize){
         this.utilArray = new int[problemSize];
         this.resetUtilArray();
+
+        fullConsistencyScoreByUniqueNumber = 3 * getProblemSize() * getProblemSize();
     }
 
     private int getProblemSize(){
@@ -44,7 +47,7 @@ public class ConsistencyCalculator {
     }
 
     private int getFullConsistencyScoreByUniqueNumber(){
-        return 3 * getProblemSize() * getProblemSize();
+        return fullConsistencyScoreByUniqueNumber;
     }
 
 }

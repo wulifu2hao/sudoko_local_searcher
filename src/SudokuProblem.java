@@ -6,7 +6,7 @@ import java.util.ListIterator;
  */
 public class SudokuProblem {
     public static final int FAKE_NEGATIVE_INFINITITY = -1000;
-    public static final int TABULIST_SIZE = 10;
+    public static final int TABULIST_SIZE = 2;
 
     private int[][] board;
     int problemSize, problemSizeSqrt;
@@ -111,6 +111,24 @@ public class SudokuProblem {
         }
     }
 
+    public void printAllConsistencies(){
+        Printer.printlnIfVerbose("rowConsistencies");
+        for(int i=0; i<problemSize; i++){
+            Printer.printIfVerbose(String.format("(%d, %d)", i, rowConsistencies[i]));
+        }
+        Printer.printlnIfVerbose("");
+        Printer.printlnIfVerbose("colConsistencies");
+        for(int i=0; i<problemSize; i++){
+            Printer.printIfVerbose(String.format("(%d, %d)", i, colConsistencies[i]));
+        }
+        Printer.printlnIfVerbose("");
+        Printer.printlnIfVerbose("areaConsistencies");
+        for(int i=0; i<problemSize; i++){
+            Printer.printIfVerbose(String.format("(%d, %d)", i, areaConsistencies[i]));
+        }
+        Printer.printlnIfVerbose("");
+    }
+
     public void resetAllConsistencies(){
         for(int i=0; i<problemSize; i++){
             rowConsistencies[i] = 0;
@@ -146,8 +164,8 @@ public class SudokuProblem {
         int areaIdx = getPositionAreaIdx(rowIdx, colIdx);
 
         rowConsistencies[rowIdx] = calculateRowConsistency(rowIdx);
-        colConsistencies[rowIdx] = calculateColConsistency(colIdx);
-        areaConsistencies[rowIdx] = calculateAreaConsistency(areaIdx);
+        colConsistencies[colIdx] = calculateColConsistency(colIdx);
+        areaConsistencies[areaIdx] = calculateAreaConsistency(areaIdx);
     }
 
     private int calculatePositionScore(Position p, boolean useCache){

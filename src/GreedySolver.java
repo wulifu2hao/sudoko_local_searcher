@@ -50,8 +50,6 @@ public class GreedySolver {
 
             int iterationsNum = 1;
             while (!problem.solved() && iterationsNum < maxIteration) {
-
-
                 updateSwapOptionsScores(problem, swapOptions, scores);
 
 //                int swapOptionIdx = findSwapOptionByScore(scores);
@@ -64,7 +62,7 @@ public class GreedySolver {
             problem.printConsistencies();
 
             if (problem.solved()) {
-                Printer.printlnIfVerbose("succeeded after "+iterationsNum+" iterations");
+                Printer.printlnIfVerbose("succeeded after "+retryIdx+" retry and stop at "+iterationsNum+" iterations");
                 return true;
             }
         }
@@ -193,7 +191,7 @@ public class GreedySolver {
                     scores[i] = SudokuProblem.FAKE_NEGATIVE_INFINITITY;
                 } else {
                     scores[i] = calculateShuffleScore(problem, options[i].p1, options[i].p2);
-                }             
+                }
         }
     }
 }
