@@ -17,7 +17,7 @@ public class URSolver {
 
         for (int i=0; i<problem.problemSize;i++) {
             for (int j=0; j<problem.problemSize;j++){
-                if (problem.board[i][j] == 0) {
+                if (problem.isUnknownPosition(i, j)) {
                     Position position = new Position(i, j);
                     unknownPositions.add(position);
                 }
@@ -53,19 +53,20 @@ public class URSolver {
     }
 
     public static void randomFlip(SudokuProblem problem, Position unknownPosition) {
-        problem.board[unknownPosition.i][unknownPosition.j] = randomInt(1, problem.problemSize+1);
-        Printer.printlnIfVerbose(String.format("flipping (%d,%d) to %d", unknownPosition.i, unknownPosition.j, problem.board[unknownPosition.i][unknownPosition.j]));
+//        TODO: this random flip does not recompute the consistencies and may be problematic...
+        problem.setValueAtPosition(unknownPosition.i, unknownPosition.j, randomInt(1, problem.problemSize+1));
+        Printer.printlnIfVerbose(String.format("flipping (%d,%d) to %d", unknownPosition.i, unknownPosition.j, problem.getValueAtPosition(unknownPosition.i, unknownPosition.j)));
     }
 
     public static void randomAssignment(SudokuProblem problem, ArrayList<Position> unknownPositions) {
         for (Position unknownPosition : unknownPositions) {
-            problem.board[unknownPosition.i][unknownPosition.j] = randomInt(1, problem.problemSize+1);
+            problem.setValueAtPosition(unknownPosition.i, unknownPosition.j, randomInt(1, problem.problemSize+1));
         }
     }
 
     public static void resetProblem(SudokuProblem problem, ArrayList<Position> unknownPositions) {
         for (Position unknownPosition : unknownPositions) {
-            problem.board[unknownPosition.i][unknownPosition.j] = 0;
+            problem.setValueAtPosition(unknownPosition.i, unknownPosition.j, 0);
         }
     }
 }

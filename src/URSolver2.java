@@ -24,11 +24,11 @@ public class URSolver2 {
 
         for (int i=0; i<problem.problemSize;i++) {
             for (int j=0; j<problem.problemSize;j++){
-                if (problem.board[i][j] == 0) {
+                if (problem.isUnknownPosition(i, j)) {
                     Position position = new Position(i, j);
                     unknownPositions.add(position);
                 } else {
-                    numberQuotaCount[problem.board[i][j]-1]--;
+                    numberQuotaCount[problem.getValueAtPosition(i, j)-1]--;
                 }
             }
         }
@@ -65,9 +65,7 @@ public class URSolver2 {
     }
 
     public static void randomShuffle(SudokuProblem problem, Position unknownPosition1, Position unknownPosition2) {
-        int temp = problem.board[unknownPosition1.i][unknownPosition1.j];
-        problem.board[unknownPosition1.i][unknownPosition1.j] = problem.board[unknownPosition2.i][unknownPosition2.j];
-        problem.board[unknownPosition2.i][unknownPosition2.j] = temp;
+        problem.shuffle(unknownPosition1, unknownPosition2);
 //        Printer.printlnIfVerbose(String.format("shuffling (%d,%d) with (%d,%d)", unknownPosition1.i, unknownPosition1.j,unknownPosition2.i, unknownPosition2.j));
     }
 
@@ -76,14 +74,17 @@ public class URSolver2 {
         Collections.shuffle(availableNumbers);
         for (int i=0; i<unknownPositions.size(); i++) {
             Position position = unknownPositions.get(i);
-            problem.board[position.i][position.j] = availableNumbers.get(i);
+            problem.setValueAtPosition(position.i, position.j, availableNumbers.get(i));
         }
+
+        problem.computeAllConsistencies();
     }
 
     public static void resetProblem(SudokuProblem problem, ArrayList<Position> unknownPositions) {
         for (Position unknownPosition : unknownPositions) {
-            problem.board[unknownPosition.i][unknownPosition.j] = 0;
+            problem.setValueAtPosition(unknownPosition.i, unknownPosition.j, 0);
         }
+        problem.resetAllConsistencies();
     }
 
     public static ArrayList<Integer> getAvailableNumbers(Integer[] numberQuotaCount) {
