@@ -6,15 +6,12 @@ import java.util.Random;
  * Created by lifu.wu on 20/2/17.
  */
 public class URSolver {
-    public static final int MAX_ITERATION = 120000000;
-    public static long randomSeed = 8006738581902217899L;
-    public static Random random = new Random(randomSeed);
+    public static Random random;
 
-    public static boolean solve(SudokuProblem problem, int maxIteration){
+    public static boolean solve(SudokuProblem problem ,long randomSeed){
+        random = new Random(randomSeed);
+
         ArrayList<Position> unknownPositions = new ArrayList<Position>();
-        if (maxIteration == 0) {
-            maxIteration = MAX_ITERATION;
-        }
 
         ArrayList<Integer> numberAvailableCounts = new ArrayList<Integer>(problem.problemSize);
         for (int i=0; i<problem.problemSize;i++) {
@@ -44,7 +41,7 @@ public class URSolver {
         randomAssignment(problem, unknownPositions,numbersForUse);
 
         int iterationsNum = 1;
-        while (!problem.solved() && iterationsNum < maxIteration) {
+        while (!problem.solved()) {
             int indexOfUnknownPosition1 =randomInt(0, unknownPositions.size());
             int indexOfUnknownPosition2 =randomInt(0, unknownPositions.size());
             randomShuffle(problem, unknownPositions.get(indexOfUnknownPosition1), unknownPositions.get(indexOfUnknownPosition2));
@@ -71,7 +68,6 @@ public class URSolver {
     }
 
     public static void randomAssignment(SudokuProblem problem, ArrayList<Position> unknownPositions, ArrayList<Integer> availableNumbers) {
-//        TODO: this shuffling is not deterministic..
         Collections.shuffle(availableNumbers);
         for (int i=0; i<unknownPositions.size(); i++) {
             Position position = unknownPositions.get(i);

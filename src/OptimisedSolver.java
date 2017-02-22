@@ -6,17 +6,14 @@ import java.util.Random;
  * Created by lifu.wu on 20/2/17.
  */
 public class OptimisedSolver {
-    public static final int MAX_ITERATION = 200;
-    public static long randomSeed = 8006738581902217899L;
-    public static Random random = new Random(randomSeed);
-    public static Random randomForShuffle = new Random(randomSeed);
+    public static Random random;
+    public static Random randomForShuffle;
 
-    public static boolean solve(SudokuProblem problem, int maxIteration){
+    public static boolean solve(SudokuProblem problem, long randomSeed, int maxRestartCount, int maxStepCount){
+        random = new Random(randomSeed);
+        randomForShuffle = new Random(randomSeed);
 
         ArrayList<Position> unknownPositions = new ArrayList<Position>();
-        if (maxIteration == 0) {
-            maxIteration = MAX_ITERATION;
-        }
 
         ArrayList<Integer> numberAvailableCounts = new ArrayList<Integer>(problem.problemSize);
         for (int i=0; i<problem.problemSize;i++) {
@@ -48,11 +45,11 @@ public class OptimisedSolver {
         int[] scores = initAllSwapOptionsScores(unknownPositions);
         PositionPair[] swapOptions = getAllSwapOptions(unknownPositions);
 
-        for (int retryIdx=0; retryIdx<100000; retryIdx++){
+        for (int retryIdx=0; retryIdx<maxRestartCount; retryIdx++){
             randomAssignment(problem, unknownPositions,numbersForUse);
 
             int iterationsNum = 1;
-            while (!problem.solved() && iterationsNum < maxIteration) {
+            while (!problem.solved() && iterationsNum < maxStepCount) {
                 updateSwapOptionsScores(problem, swapOptions, scores);
 
 //                int swapOptionIdx = findSwapOptionByScore(scores);
@@ -85,7 +82,6 @@ public class OptimisedSolver {
     }
 
     public static void randomAssignment(SudokuProblem problem, ArrayList<Position> unknownPositions, ArrayList<Integer> availableNumbers) {
-//        TODO: this shuffling is not deterministic..
         Collections.shuffle(availableNumbers, randomForShuffle);
         for (int i=0; i<unknownPositions.size(); i++) {
             Position position = unknownPositions.get(i);
@@ -113,16 +109,6 @@ public class OptimisedSolver {
 
     public static int calculateShuffleScore(SudokuProblem problem, Position p1, Position p2){
         return problem.calculateShuffleScore(p1, p2);
-    }
-
-    public static int findSwapOptionByScore(int[] scores){
-        int bestIdx = 0;
-        for (int i=1; i<scores.length; i++) {
-            if (scores[i] > scores[bestIdx]){
-                bestIdx = i;
-            }
-        }
-        return bestIdx;
     }
 
     public static int findSwapOptionByScoreWithProbability(int[] scores){

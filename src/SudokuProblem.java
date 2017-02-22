@@ -6,7 +6,6 @@ import java.util.ListIterator;
  */
 public class SudokuProblem {
     public static final int FAKE_NEGATIVE_INFINITITY = -1000;
-    public static final int TABULIST_SIZE = 2;
 
     private int[][] board;
     int problemSize, problemSizeSqrt;
@@ -14,8 +13,9 @@ public class SudokuProblem {
     boolean[] existCheckArray;
     ConsistencyCalculator calculator;
     private LinkedList<PositionPair> tabuList;
+    private int tabuListCapacity;
 
-    public SudokuProblem(int[][] board){
+    public SudokuProblem(int[][] board, int tabuListCapacity){
         this.board = board;
         problemSize = board.length;
         problemSizeSqrt = (int)(Math.sqrt(problemSize));
@@ -32,6 +32,7 @@ public class SudokuProblem {
 
         calculator = new ConsistencyCalculator(problemSize);
         tabuList = new LinkedList<PositionPair>();
+        this.tabuListCapacity = tabuListCapacity;
     }
 
     public void printBoard(){
@@ -47,21 +48,6 @@ public class SudokuProblem {
         Printer.println("consistency sum:"+consistencySum());
     }
 
-    public void solve(int maxIteration){
-        long startTime = System.currentTimeMillis();
-//        boolean solved = URSolver2.solve(this, maxIteration);
-        boolean solved = OptimisedSolver.solve(this, maxIteration);
-        long endTime = System.currentTimeMillis();
-        long totalTime = endTime - startTime;
-        Printer.printlnIfVerbose(String.format("time spend: %dMs", totalTime));
-
-        if (solved) {
-            Printer.printlnIfVerbose("successful");
-        } else {
-            Printer.printlnIfVerbose("fail");
-        }
-    }
-
     public boolean solved(){
         if (consistencySum() == calculator.getFullConsistencyScore()){
             return true;
@@ -75,7 +61,7 @@ public class SudokuProblem {
         updateConsistencies(p1);
         updateConsistencies(p2);
 
-        if (tabuList.size() >= TABULIST_SIZE) {
+        if (tabuList.size() >= this.tabuListCapacity) {
             tabuList.removeFirst();
         }
         tabuList.add(new PositionPair(p1, p2));
