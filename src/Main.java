@@ -13,7 +13,7 @@ public class Main {
 
         SudokuProblem problem = readInput();
         problem.solve(maxIteration);
-        problem.printBoard();
+//        problem.printBoard();
     }
 
     public static SudokuProblem readInput() throws Exception{
@@ -46,7 +46,7 @@ public class Main {
             lineIndex++;
             if (lineIndex == SUDOKU_SIZE) {
                 SudokuProblem problem = new SudokuProblem(board);
-                problem.printBoard();
+//                problem.printBoard();
                 return problem;
             }
         }

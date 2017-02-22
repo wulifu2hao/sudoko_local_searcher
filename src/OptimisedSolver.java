@@ -5,11 +5,14 @@ import java.util.Random;
 /**
  * Created by lifu.wu on 20/2/17.
  */
-public class GreedySolver {
-    public static final int MAX_ITERATION = 10000;
-    public static Random random = new Random();
+public class OptimisedSolver {
+    public static final int MAX_ITERATION = 200;
+    public static long randomSeed = 8006738581902217899L;
+    public static Random random = new Random(randomSeed);
+    public static Random randomForShuffle = new Random(randomSeed);
 
     public static boolean solve(SudokuProblem problem, int maxIteration){
+
         ArrayList<Position> unknownPositions = new ArrayList<Position>();
         if (maxIteration == 0) {
             maxIteration = MAX_ITERATION;
@@ -59,7 +62,7 @@ public class GreedySolver {
             }
 
 //            problem.printBoard();
-            problem.printConsistencies();
+//            problem.printConsistencies();
 
             if (problem.solved()) {
                 Printer.printlnIfVerbose("succeeded after "+retryIdx+" retry and stop at "+iterationsNum+" iterations");
@@ -83,7 +86,7 @@ public class GreedySolver {
 
     public static void randomAssignment(SudokuProblem problem, ArrayList<Position> unknownPositions, ArrayList<Integer> availableNumbers) {
 //        TODO: this shuffling is not deterministic..
-        Collections.shuffle(availableNumbers);
+        Collections.shuffle(availableNumbers, randomForShuffle);
         for (int i=0; i<unknownPositions.size(); i++) {
             Position position = unknownPositions.get(i);
             problem.setValueAtPosition(position.i, position.j, availableNumbers.get(i));
@@ -153,11 +156,6 @@ public class GreedySolver {
             }
         }
 
-        return bestIdx;
-    }
-
-    public static int findSwapOptionByRandom(int[] scores){
-        int bestIdx = randomInt(0, scores.length);
         return bestIdx;
     }
 

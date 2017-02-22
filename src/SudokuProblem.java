@@ -48,7 +48,13 @@ public class SudokuProblem {
     }
 
     public void solve(int maxIteration){
-        boolean solved = GreedySolver.solve(this, maxIteration);
+        long startTime = System.currentTimeMillis();
+//        boolean solved = URSolver2.solve(this, maxIteration);
+        boolean solved = OptimisedSolver.solve(this, maxIteration);
+        long endTime = System.currentTimeMillis();
+        long totalTime = endTime - startTime;
+        Printer.printlnIfVerbose(String.format("time spend: %dMs", totalTime));
+
         if (solved) {
             Printer.printlnIfVerbose("successful");
         } else {

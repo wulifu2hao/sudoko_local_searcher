@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by lifu.wu on 22/2/17.
@@ -7,11 +8,12 @@ public class MainTest {
     public static Scanner scanner = new Scanner(System.in);
     public static final int SUDOKU_SIZE = 9;
     public static int maxIteration = 0;
+    private static final AtomicLong seedUniquifier
+            = new AtomicLong(8682522807148012L);
 
     public static void main(String[] args) throws Exception{
-        SudokuProblem problem = readInput();
-        problem.computeAllConsistencies();
-        problem.printAllConsistencies();
+        long seed = seedUniquifier() ^ System.nanoTime();
+        Printer.printlnIfVerbose(""+seed);
     }
 
     public static SudokuProblem readInput() throws Exception{
@@ -50,5 +52,16 @@ public class MainTest {
         }
 
         throw new Exception("invalid input");
+    }
+
+    private static long seedUniquifier() {
+        // L'Ecuyer, "Tables of Linear Congruential Generators of
+        // Different Sizes and Good Lattice Structure", 1999
+        for (;;) {
+            long current = seedUniquifier.get();
+            long next = current * 181783497276652981L;
+            if (seedUniquifier.compareAndSet(current, next))
+                return next;
+        }
     }
 }
