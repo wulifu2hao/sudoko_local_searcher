@@ -3,6 +3,7 @@ import java.util.ListIterator;
 
 /**
  * Created by lifu.wu on 19/2/17.
+ * A0105661M e0045348@u.nus.edu
  */
 public class SudokuProblem {
     public static final int FAKE_NEGATIVE_INFINITITY = -1000;

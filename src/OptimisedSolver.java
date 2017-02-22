@@ -4,6 +4,7 @@ import java.util.Random;
 
 /**
  * Created by lifu.wu on 20/2/17.
+ * A0105661M e0045348@u.nus.edu
  */
 public class OptimisedSolver {
     public static Random random;

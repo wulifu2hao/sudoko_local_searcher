@@ -1,5 +1,6 @@
 /**
  * Created by lifu.wu on 21/2/17.
+ * A0105661M e0045348@u.nus.edu
  */
 public class ConsistencyCalculator {
     int[] utilArray;
